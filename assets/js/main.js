@@ -1,92 +1,105 @@
-$(function () {
+/*
+	Overflow by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
 
-    "use strict";
+(function($) {
 
-    //===== Prealoder
+	var	$window = $(window),
+		$body = $('body'),
+		settings = {
 
-    $(window).on('load', function (event) {
-        $('.preloader').delay(500).fadeOut(500);
-    });
+			// Parallax background effect?
+				parallax: true,
 
+			// Parallax factor (lower = more intense, higher = less intense).
+				parallaxFactor: 10
 
-   //===== Sticky
+		};
 
-    $(window).on('scroll', function (event) {
-        var scroll = $(window).scrollTop();
-        if (scroll < 20) {
-            $(".header_navbar").removeClass("sticky");
-        } else {
-            $(".header_navbar").addClass("sticky");
-        }
-    });
+	// Breakpoints.
+		breakpoints({
+			wide:    [ '1081px',  '1680px' ],
+			normal:  [ '841px',   '1080px' ],
+			narrow:  [ '737px',   '840px'  ],
+			mobile:  [ null,      '736px'  ]
+		});
 
-    
-    //===== Section Menu Active
+	// Mobile?
+		if (browser.mobile)
+			$body.addClass('is-scroll');
 
-    var scrollLink = $('.page-scroll');
-    // Active link switching
-    $(window).scroll(function () {
-        var scrollbarLocation = $(this).scrollTop();
+	// Play initial animations on page load.
+		$window.on('load', function() {
+			window.setTimeout(function() {
+				$body.removeClass('is-preload');
+			}, 100);
+		});
 
-        scrollLink.each(function () {
+	// Scrolly.
+		$('.scrolly-middle').scrolly({
+			speed: 1000,
+			anchor: 'middle'
+		});
 
-            var sectionOffset = $(this.hash).offset().top - 73;
+		$('.scrolly').scrolly({
+			speed: 1000,
+			offset: function() { return (breakpoints.active('<=mobile') ? 70 : 190); }
+		});
 
-            if (sectionOffset <= scrollbarLocation) {
-                $(this).parent().addClass('active');
-                $(this).parent().siblings().removeClass('active');
-            }
-        });
-    });
-    
-    
-    //===== close navbar-collapse when a  clicked
+	// Parallax background.
 
-    $(".navbar-nav a").on('click', function () {
-        $(".navbar-collapse").removeClass("show");
-    });
+		// Disable parallax on IE/Edge (smooth scrolling is jerky), and on mobile platforms (= better performance).
+			if (browser.name == 'ie'
+			||	browser.name == 'edge'
+			||	browser.mobile)
+				settings.parallax = false;
 
-    $(".navbar-toggler").on('click', function () {
-        $(this).toggleClass("active");
-    });
+		if (settings.parallax) {
 
-    $(".navbar-nav a").on('click', function () {
-        $(".navbar-toggler").removeClass('active');
-    });
+			var $dummy = $(), $bg;
 
+			$window
+				.on('scroll.overflow_parallax', function() {
 
-    //===== Back to top
+					// Adjust background position.
+						$bg.css('background-position', 'center ' + (-1 * (parseInt($window.scrollTop()) / settings.parallaxFactor)) + 'px');
 
-    // Show or hide the sticky footer button
-    $(window).on('scroll', function (event) {
-        if ($(this).scrollTop() > 600) {
-            $('.back-to-top').fadeIn(200)
-        } else {
-            $('.back-to-top').fadeOut(200)
-        }
-    });
+				})
+				.on('resize.overflow_parallax', function() {
 
+					// If we're in a situation where we need to temporarily disable parallax, do so.
+						if (breakpoints.active('<=narrow')) {
 
-    //Animate the scroll to yop
-    $('.back-to-top').on('click', function (event) {
-        event.preventDefault();
+							$body.css('background-position', '');
+							$bg = $dummy;
 
-        $('html, body').animate({
-            scrollTop: 0,
-        }, 1500);
-    });
+						}
 
-    //=====  WOW active
-    
-    var wow = new WOW({
-        boxClass: 'wow', //
-        mobile: false, // 
-    })
-    wow.init();
-    
+					// Otherwise, continue as normal.
+						else
+							$bg = $body;
 
-    //===== 
+					// Trigger scroll handler.
+						$window.triggerHandler('scroll.overflow_parallax');
 
+				})
+				.trigger('resize.overflow_parallax');
 
+		}
 
-});
+	// Poptrox.
+		$('.gallery').poptrox({
+			useBodyOverflow: false,
+			usePopupEasyClose: false,
+			overlayColor: '#0a1919',
+			overlayOpacity: 0.75,
+			usePopupDefaultStyling: false,
+			usePopupCaption: true,
+			popupLoaderText: '',
+			windowMargin: 10,
+			usePopupNav: true
+		});
+
+})(jQuery);

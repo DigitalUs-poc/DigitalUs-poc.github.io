@@ -1,0 +1,1856 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "digitalUs",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/login/access-token-admin": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Login Access Token Admin",
+        "description": "OAuth2 compatible token login, get an admin access token for future requests",
+        "operationId": "login_access_token_admin_api_v1_login_access_token_admin_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_access_token_admin_api_v1_login_access_token_admin_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Login"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/login/access-token": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Login Access Token",
+        "description": "OAuth2 compatible token login, get an access token for future requests",
+        "operationId": "login_access_token_api_v1_login_access_token_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_access_token_api_v1_login_access_token_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Login"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/login/verify-admin": {
+      "get": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Test Token",
+        "description": "Test access token",
+        "operationId": "test_token_api_v1_login_verify_admin_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Test Token Api V1 Login Verify Admin Get",
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/login/verify": {
+      "get": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Test Token",
+        "description": "Test access token",
+        "operationId": "test_token_api_v1_login_verify_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Test Token Api V1 Login Verify Get",
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/password-recovery/{email}": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Recover Password",
+        "description": "Password Recovery",
+        "operationId": "recover_password_api_v1_password_recovery__email__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Email",
+              "type": "string"
+            },
+            "name": "email",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Msg"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reset-password/": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Reset Password",
+        "description": "Reset password",
+        "operationId": "reset_password_api_v1_reset_password__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_reset_password_api_v1_reset_password__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Msg"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reports/": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Read Reports",
+        "description": "Retrieve reports.",
+        "operationId": "read_reports_api_v1_reports__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read Reports Api V1 Reports  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReportSummary"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Create Report",
+        "description": "Create new report and forward to hermes.",
+        "operationId": "create_report_api_v1_reports__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/reports/archived": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Read Archived",
+        "description": "Retrieve reports.",
+        "operationId": "read_archived_api_v1_reports_archived_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read Archived Api V1 Reports Archived Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReportSummary"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/reports/{idx}": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Read Report",
+        "description": "Get report by ID.",
+        "operationId": "read_report_api_v1_reports__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Update Report",
+        "description": "Update an report.",
+        "operationId": "update_report_api_v1_reports__idx__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Result"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Delete Report",
+        "description": "Delete a report.",
+        "operationId": "delete_report_api_v1_reports__idx__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Delete Report Api V1 Reports  Idx  Delete",
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/reports/summary/{idx}": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Read Report Summary",
+        "description": "Get report summary by ID.",
+        "operationId": "read_report_summary_api_v1_reports_summary__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/reports/see/{idx}": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Seen Report",
+        "description": "Set a report seen.",
+        "operationId": "seen_report_api_v1_reports_see__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Seen Report Api V1 Reports See  Idx  Get",
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/reports/archive/{idx}": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Archive Report",
+        "description": "Set a report seen.",
+        "operationId": "archive_report_api_v1_reports_archive__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Archive Report Api V1 Reports Archive  Idx  Get",
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Un Archive Report",
+        "description": "Set a report seen.",
+        "operationId": "un_archive_report_api_v1_reports_archive__idx__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Un Archive Report Api V1 Reports Archive  Idx  Delete",
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/reports/raw/{idx}": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Report To Raw",
+        "operationId": "report_to_raw_api_v1_reports_raw__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/reports/html/{idx}": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Report To Html",
+        "operationId": "report_to_html_api_v1_reports_html__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/reports/pdf/{idx}": {
+      "get": {
+        "tags": [
+          "reports"
+        ],
+        "summary": "Html To Pdf",
+        "operationId": "html_to_pdf_api_v1_reports_pdf__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/notices/length": {
+      "get": {
+        "tags": [
+          "notices"
+        ],
+        "summary": "Get Notice Count",
+        "description": "Retrieve total notices count.",
+        "operationId": "get_notice_count_api_v1_notices_length_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Notice Count Api V1 Notices Length Get",
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/notices/": {
+      "get": {
+        "tags": [
+          "notices"
+        ],
+        "summary": "Read Recent Notices",
+        "description": "Retrieve recent notices.",
+        "operationId": "read_recent_notices_api_v1_notices__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Num",
+              "type": "integer",
+              "default": 5
+            },
+            "name": "num",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read Recent Notices Api V1 Notices  Get",
+                  "type": "array",
+                  "items": {}
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/notices/{idx}": {
+      "get": {
+        "tags": [
+          "notices"
+        ],
+        "summary": "Read Notice",
+        "description": "Get notice by id",
+        "operationId": "read_notice_api_v1_notices__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notice"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/notices/seen": {
+      "put": {
+        "tags": [
+          "notices"
+        ],
+        "summary": "Seen Notice",
+        "description": "Set notice as seen on date",
+        "operationId": "seen_notice_api_v1_notices_seen_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoticeUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notice"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Attribute": {
+        "title": "Attribute",
+        "required": [
+          "name",
+          "values"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "values": {
+            "title": "Values",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Value"
+            }
+          }
+        }
+      },
+      "AuthToken": {
+        "title": "AuthToken",
+        "required": [
+          "value",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        }
+      },
+      "Body_login_access_token_admin_api_v1_login_access_token_admin_post": {
+        "title": "Body_login_access_token_admin_api_v1_login_access_token_admin_post",
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "title": "Grant Type",
+            "pattern": "password",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string",
+            "default": ""
+          },
+          "client_id": {
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string"
+          }
+        }
+      },
+      "Body_login_access_token_api_v1_login_access_token_post": {
+        "title": "Body_login_access_token_api_v1_login_access_token_post",
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "title": "Grant Type",
+            "pattern": "password",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string",
+            "default": ""
+          },
+          "client_id": {
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": "string"
+          }
+        }
+      },
+      "Body_reset_password_api_v1_reset_password__post": {
+        "title": "Body_reset_password_api_v1_reset_password__post",
+        "required": [
+          "token",
+          "new_password"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "title": "Token",
+            "type": "string"
+          },
+          "new_password": {
+            "title": "New Password",
+            "type": "string"
+          }
+        }
+      },
+      "EndpointsElement": {
+        "title": "EndpointsElement",
+        "required": [
+          "count",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "Header": {
+        "title": "Header",
+        "required": [
+          "iteration",
+          "search_id",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "iteration": {
+            "title": "Iteration",
+            "type": "integer"
+          },
+          "search_id": {
+            "title": "Search Id",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      },
+      "HistoryElement": {
+        "title": "HistoryElement",
+        "required": [
+          "profile_id"
+        ],
+        "type": "object",
+        "properties": {
+          "profile_id": {
+            "title": "Profile Id",
+            "type": "integer"
+          },
+          "values": {
+            "title": "Values",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
+        }
+      },
+      "Log": {
+        "title": "Log",
+        "type": "object",
+        "properties": {
+          "endpoints": {
+            "title": "Endpoints",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointsElement"
+            },
+            "default": []
+          },
+          "history": {
+            "title": "History",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoryElement"
+            },
+            "default": []
+          }
+        }
+      },
+      "Login": {
+        "title": "Login",
+        "required": [
+          "token",
+          "user"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "$ref": "#/components/schemas/AuthToken"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserLoggedIn"
+          }
+        }
+      },
+      "Msg": {
+        "title": "Msg",
+        "required": [
+          "msg"
+        ],
+        "type": "object",
+        "properties": {
+          "msg": {
+            "title": "Msg",
+            "type": "string"
+          }
+        }
+      },
+      "Notice": {
+        "title": "Notice",
+        "required": [
+          "user_id",
+          "payload",
+          "id",
+          "created"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/NoticePayload"
+          },
+          "seen_on": {
+            "title": "Seen On",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          }
+        }
+      },
+      "NoticePayload": {
+        "title": "NoticePayload",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NoticePayloadType"
+              }
+            ],
+            "default": "UNKNOWN"
+          }
+        }
+      },
+      "NoticePayloadType": {
+        "title": "NoticePayloadType",
+        "enum": [
+          "UNKNOWN",
+          "REPORT",
+          "<class 'app.schemas.notice.NoticePayloadType.Config'>"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "NoticeUpdate": {
+        "title": "NoticeUpdate",
+        "required": [
+          "user_id",
+          "seen_on",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/NoticePayload"
+          },
+          "seen_on": {
+            "title": "Seen On",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          }
+        }
+      },
+      "Origin": {
+        "title": "Origin",
+        "type": "object",
+        "properties": {
+          "domain": {
+            "title": "Domain",
+            "type": "string",
+            "default": "seed"
+          },
+          "iteration": {
+            "title": "Iteration",
+            "type": "integer",
+            "default": 0
+          },
+          "profile_id": {
+            "title": "Profile Id",
+            "type": "string",
+            "default": "__user__"
+          },
+          "timestamp": {
+            "title": "Timestamp",
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "Profile": {
+        "title": "Profile",
+        "required": [
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "title": "Attributes",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            }
+          }
+        }
+      },
+      "Report": {
+        "title": "Report",
+        "required": [
+          "id",
+          "user_id",
+          "created"
+        ],
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "title": "First Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "email": {
+            "title": "Email",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "title": "Image",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          },
+          "modified": {
+            "title": "Modified",
+            "type": "integer"
+          },
+          "seen_on": {
+            "title": "Seen On",
+            "type": "integer"
+          },
+          "archived_on": {
+            "title": "Archived On",
+            "type": "integer"
+          },
+          "tags": {
+            "title": "Tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "body": {
+            "title": "Body",
+            "type": "string"
+          }
+        }
+      },
+      "ReportSummary": {
+        "title": "ReportSummary",
+        "required": [
+          "id",
+          "user_id",
+          "created"
+        ],
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "title": "First Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "email": {
+            "title": "Email",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "title": "Image",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          },
+          "modified": {
+            "title": "Modified",
+            "type": "integer"
+          },
+          "seen_on": {
+            "title": "Seen On",
+            "type": "integer"
+          },
+          "archived_on": {
+            "title": "Archived On",
+            "type": "integer"
+          },
+          "tags": {
+            "title": "Tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      },
+      "Request": {
+        "title": "Request",
+        "required": [
+          "profile",
+          "settings"
+        ],
+        "type": "object",
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/Seed"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/Settings"
+          }
+        }
+      },
+      "Result": {
+        "title": "Result",
+        "required": [
+          "header",
+          "log",
+          "profile",
+          "settings"
+        ],
+        "type": "object",
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/Header"
+          },
+          "log": {
+            "$ref": "#/components/schemas/Log"
+          },
+          "others": {
+            "title": "Others",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Profile"
+            },
+            "default": []
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/Settings"
+          }
+        }
+      },
+      "Seed": {
+        "title": "Seed",
+        "required": [
+          "first_name",
+          "last_name"
+        ],
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "title": "First Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "email": {
+            "title": "Email",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "avatar_url": {
+            "title": "Avatar Url",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "title": "Image",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Settings": {
+        "title": "Settings",
+        "type": "object",
+        "properties": {
+          "attribute_black_list": {
+            "title": "Attribute Black List",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "domain_black_list": {
+            "title": "Domain Black List",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "source_black_list": {
+            "title": "Source Black List",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "endpoint_black_list": {
+            "title": "Endpoint Black List",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
+        }
+      },
+      "UserLoggedIn": {
+        "title": "UserLoggedIn",
+        "required": [
+          "email",
+          "is_active",
+          "is_superuser"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "is_superuser": {
+            "title": "Is Superuser",
+            "type": "boolean"
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      },
+      "Value": {
+        "title": "Value",
+        "required": [
+          "origin",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "confidence": {
+            "title": "Confidence",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "default": 0
+          },
+          "origin": {
+            "title": "Origin",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Origin"
+            }
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "/api/v1/login/access-token"
+          }
+        }
+      }
+    }
+  }
+}

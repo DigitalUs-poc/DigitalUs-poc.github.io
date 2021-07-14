@@ -1822,7 +1822,7 @@
         "flows": {
           "password": {
             "scopes": {},
-            "tokenUrl": "https://dev.digitalus.io/api/v1/auth/login"
+            "tokenUrl": "https://app.digitalus.io/api/v1/auth/login"
           }
         }
       }

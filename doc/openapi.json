@@ -1,23 +1,23 @@
-{
+﻿{
   "openapi": "3.0.2",
   "info": {
     "title": "digitalUs",
     "version": "0.1.0"
   },
   "paths": {
-    "/api/v1/login/access-token-admin": {
+    "/api/v1/seed/": {
       "post": {
         "tags": [
-          "login"
+          "seed"
         ],
-        "summary": "Login Access Token Admin",
-        "description": "OAuth2 compatible token login, get an admin access token for future requests",
-        "operationId": "login_access_token_admin_api_v1_login_access_token_admin_post",
+        "summary": "Create",
+        "description": "Create new report and forward to hermes.",
+        "operationId": "create_api_v1_seed__post",
         "requestBody": {
           "content": {
-            "application/x-www-form-urlencoded": {
+            "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Body_login_access_token_admin_api_v1_login_access_token_admin_post"
+                "$ref": "#/components/schemas/Request"
               }
             }
           },
@@ -29,7 +29,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Login"
+                  "$ref": "#/components/schemas/Header"
                 }
               }
             }
@@ -44,22 +44,27 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
-    "/api/v1/login/access-token": {
+    "/api/v1/auth/login": {
       "post": {
         "tags": [
-          "login"
+          "auth"
         ],
-        "summary": "Login Access Token",
+        "summary": "Login",
         "description": "OAuth2 compatible token login, get an access token for future requests",
-        "operationId": "login_access_token_api_v1_login_access_token_post",
+        "operationId": "login_api_v1_auth_login_post",
         "requestBody": {
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Body_login_access_token_api_v1_login_access_token_post"
+                "$ref": "#/components/schemas/Body_login_api_v1_auth_login_post"
               }
             }
           },
@@ -89,21 +94,21 @@
         }
       }
     },
-    "/api/v1/login/verify-admin": {
+    "/api/v1/auth/verify": {
       "get": {
         "tags": [
-          "login"
+          "auth"
         ],
-        "summary": "Test Token",
-        "description": "Test access token",
-        "operationId": "test_token_api_v1_login_verify_admin_get",
+        "summary": "Verify Token",
+        "description": "Verify access token",
+        "operationId": "verify_token_api_v1_auth_verify_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Test Token Api V1 Login Verify Admin Get",
+                  "title": "Response Verify Token Api V1 Auth Verify Get",
                   "type": "boolean"
                 }
               }
@@ -117,48 +122,63 @@
         ]
       }
     },
-    "/api/v1/login/verify": {
-      "get": {
-        "tags": [
-          "login"
-        ],
-        "summary": "Test Token",
-        "description": "Test access token",
-        "operationId": "test_token_api_v1_login_verify_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Test Token Api V1 Login Verify Get",
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/password-recovery/{email}": {
+    "/api/v1/auth/register": {
       "post": {
         "tags": [
-          "login"
+          "auth"
+        ],
+        "summary": "Create User With Token",
+        "description": "Create new user using a token, without being logged in.",
+        "operationId": "create_user_with_token_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegister"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/recover/{email}": {
+      "get": {
+        "tags": [
+          "auth"
         ],
         "summary": "Recover Password",
         "description": "Password Recovery",
-        "operationId": "recover_password_api_v1_password_recovery__email__post",
+        "operationId": "recover_password_api_v1_auth_recover__email__get",
         "parameters": [
           {
             "required": true,
             "schema": {
               "title": "Email",
-              "type": "string"
+              "type": "string",
+              "format": "email"
             },
             "name": "email",
             "in": "path"
@@ -188,19 +208,19 @@
         }
       }
     },
-    "/api/v1/reset-password/": {
+    "/api/v1/auth/reset": {
       "post": {
         "tags": [
-          "login"
+          "auth"
         ],
         "summary": "Reset Password",
         "description": "Reset password",
-        "operationId": "reset_password_api_v1_reset_password__post",
+        "operationId": "reset_password_api_v1_auth_reset_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Body_reset_password_api_v1_reset_password__post"
+                "$ref": "#/components/schemas/Body_reset_password_api_v1_auth_reset_post"
               }
             }
           },
@@ -230,14 +250,345 @@
         }
       }
     },
-    "/api/v1/reports/": {
+    "/api/v1/auth/me": {
       "get": {
         "tags": [
-          "reports"
+          "auth"
+        ],
+        "summary": "Read User Me",
+        "description": "Get current user.",
+        "operationId": "read_user_me_api_v1_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Update User Me",
+        "description": "Update own user.",
+        "operationId": "update_user_me_api_v1_auth_me_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/me/admin": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Am I Admin",
+        "description": "Get current user.",
+        "operationId": "am_i_admin_api_v1_auth_me_admin_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Am I Admin Api V1 Auth Me Admin Get",
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/me/quota": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Get My Quota",
+        "description": "Update own user.",
+        "operationId": "get_my_quota_api_v1_auth_me_quota_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserQuota"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/me/sources": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Get My Sources",
+        "description": "Update own user.",
+        "operationId": "get_my_sources_api_v1_auth_me_sources_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSources"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Update My Sources",
+        "description": "Update own user.",
+        "operationId": "update_my_sources_api_v1_auth_me_sources_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Sources",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Msg"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/me/activate": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Activate User",
+        "description": "(De)Activate my account",
+        "operationId": "activate_user_api_v1_auth_me_activate_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Flag"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/me/delete": {
+      "delete": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Delete User",
+        "description": "Delete my account",
+        "operationId": "delete_user_api_v1_auth_me_delete_delete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_delete_user_api_v1_auth_me_delete_delete"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Flag"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/report/usage/day": {
+      "get": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Read Usage Day",
+        "description": "Retrieve analytics for this day.",
+        "operationId": "read_usage_day_api_v1_report_usage_day_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Analytics"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/report/usage/month": {
+      "get": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Read Usage Month",
+        "description": "Retrieve analytics for this month.",
+        "operationId": "read_usage_month_api_v1_report_usage_month_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Analytics"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/report/": {
+      "get": {
+        "tags": [
+          "report"
         ],
         "summary": "Read Reports",
         "description": "Retrieve reports.",
-        "operationId": "read_reports_api_v1_reports__get",
+        "operationId": "read_reports_api_v1_report__get",
         "parameters": [
           {
             "required": false,
@@ -266,56 +617,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Read Reports Api V1 Reports  Get",
+                  "title": "Response Read Reports Api V1 Report  Get",
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ReportSummary"
+                    "$ref": "#/components/schemas/Report"
                   }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "reports"
-        ],
-        "summary": "Create Report",
-        "description": "Create new report and forward to hermes.",
-        "operationId": "create_report_api_v1_reports__post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Report"
                 }
               }
             }
@@ -338,14 +644,14 @@
         ]
       }
     },
-    "/api/v1/reports/archived": {
+    "/api/v1/report/archived": {
       "get": {
         "tags": [
-          "reports"
+          "report"
         ],
         "summary": "Read Archived",
         "description": "Retrieve reports.",
-        "operationId": "read_archived_api_v1_reports_archived_get",
+        "operationId": "read_archived_api_v1_report_archived_get",
         "parameters": [
           {
             "required": false,
@@ -374,10 +680,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Read Archived Api V1 Reports Archived Get",
+                  "title": "Response Read Archived Api V1 Report Archived Get",
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ReportSummary"
+                    "$ref": "#/components/schemas/Report"
                   }
                 }
               }
@@ -401,14 +707,14 @@
         ]
       }
     },
-    "/api/v1/reports/{idx}": {
+    "/api/v1/report/summary/{idx}": {
       "get": {
         "tags": [
-          "reports"
+          "report"
         ],
         "summary": "Read Report",
-        "description": "Get report by ID.",
-        "operationId": "read_report_api_v1_reports__idx__get",
+        "description": "Get report summary by ID.",
+        "operationId": "read_report_api_v1_report_summary__idx__get",
         "parameters": [
           {
             "required": true,
@@ -447,14 +753,16 @@
             "OAuth2PasswordBearer": []
           }
         ]
-      },
-      "post": {
+      }
+    },
+    "/api/v1/report/{idx}": {
+      "get": {
         "tags": [
-          "reports"
+          "report"
         ],
-        "summary": "Update Report",
-        "description": "Update an report.",
-        "operationId": "update_report_api_v1_reports__idx__post",
+        "summary": "Read Report Data",
+        "description": "Get report by ID.",
+        "operationId": "read_report_data_api_v1_report__idx__get",
         "parameters": [
           {
             "required": true,
@@ -466,23 +774,13 @@
             "in": "path"
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Result"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Report"
+                  "$ref": "#/components/schemas/ReportData"
                 }
               }
             }
@@ -506,11 +804,11 @@
       },
       "delete": {
         "tags": [
-          "reports"
+          "report"
         ],
         "summary": "Delete Report",
         "description": "Delete a report.",
-        "operationId": "delete_report_api_v1_reports__idx__delete",
+        "operationId": "delete_report_api_v1_report__idx__delete",
         "parameters": [
           {
             "required": true,
@@ -528,7 +826,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Delete Report Api V1 Reports  Idx  Delete",
+                  "title": "Response Delete Report Api V1 Report  Idx  Delete",
                   "type": "boolean"
                 }
               }
@@ -552,62 +850,14 @@
         ]
       }
     },
-    "/api/v1/reports/summary/{idx}": {
+    "/api/v1/report/see/{idx}": {
       "get": {
         "tags": [
-          "reports"
-        ],
-        "summary": "Read Report Summary",
-        "description": "Get report summary by ID.",
-        "operationId": "read_report_summary_api_v1_reports_summary__idx__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Idx",
-              "type": "integer"
-            },
-            "name": "idx",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReportSummary"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/reports/see/{idx}": {
-      "get": {
-        "tags": [
-          "reports"
+          "report"
         ],
         "summary": "Seen Report",
         "description": "Set a report seen.",
-        "operationId": "seen_report_api_v1_reports_see__idx__get",
+        "operationId": "seen_report_api_v1_report_see__idx__get",
         "parameters": [
           {
             "required": true,
@@ -625,7 +875,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Seen Report Api V1 Reports See  Idx  Get",
+                  "title": "Response Seen Report Api V1 Report See  Idx  Get",
                   "type": "integer"
                 }
               }
@@ -649,14 +899,14 @@
         ]
       }
     },
-    "/api/v1/reports/archive/{idx}": {
+    "/api/v1/report/archive/{idx}": {
       "get": {
         "tags": [
-          "reports"
+          "report"
         ],
         "summary": "Archive Report",
         "description": "Set a report seen.",
-        "operationId": "archive_report_api_v1_reports_archive__idx__get",
+        "operationId": "archive_report_api_v1_report_archive__idx__get",
         "parameters": [
           {
             "required": true,
@@ -674,7 +924,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Archive Report Api V1 Reports Archive  Idx  Get",
+                  "title": "Response Archive Report Api V1 Report Archive  Idx  Get",
                   "type": "integer"
                 }
               }
@@ -699,11 +949,11 @@
       },
       "delete": {
         "tags": [
-          "reports"
+          "report"
         ],
         "summary": "Un Archive Report",
         "description": "Set a report seen.",
-        "operationId": "un_archive_report_api_v1_reports_archive__idx__delete",
+        "operationId": "un_archive_report_api_v1_report_archive__idx__delete",
         "parameters": [
           {
             "required": true,
@@ -721,7 +971,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Un Archive Report Api V1 Reports Archive  Idx  Delete",
+                  "title": "Response Un Archive Report Api V1 Report Archive  Idx  Delete",
                   "type": "integer"
                 }
               }
@@ -745,13 +995,13 @@
         ]
       }
     },
-    "/api/v1/reports/raw/{idx}": {
+    "/api/v1/report/raw/{idx}": {
       "get": {
         "tags": [
-          "reports"
+          "report"
         ],
         "summary": "Report To Raw",
-        "operationId": "report_to_raw_api_v1_reports_raw__idx__get",
+        "operationId": "report_to_raw_api_v1_report_raw__idx__get",
         "parameters": [
           {
             "required": true,
@@ -792,13 +1042,13 @@
         ]
       }
     },
-    "/api/v1/reports/html/{idx}": {
+    "/api/v1/report/html/{idx}": {
       "get": {
         "tags": [
-          "reports"
+          "report"
         ],
         "summary": "Report To Html",
-        "operationId": "report_to_html_api_v1_reports_html__idx__get",
+        "operationId": "report_to_html_api_v1_report_html__idx__get",
         "parameters": [
           {
             "required": true,
@@ -839,13 +1089,13 @@
         ]
       }
     },
-    "/api/v1/reports/pdf/{idx}": {
+    "/api/v1/report/pdf/{idx}": {
       "get": {
         "tags": [
-          "reports"
+          "report"
         ],
         "summary": "Html To Pdf",
-        "operationId": "html_to_pdf_api_v1_reports_pdf__idx__get",
+        "operationId": "html_to_pdf_api_v1_report_pdf__idx__get",
         "parameters": [
           {
             "required": true,
@@ -878,235 +1128,25 @@
           }
         ]
       }
-    },
-    "/api/v1/notices/length": {
-      "get": {
-        "tags": [
-          "notices"
-        ],
-        "summary": "Get Notice Count",
-        "description": "Retrieve total notices count.",
-        "operationId": "get_notice_count_api_v1_notices_length_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Get Notice Count Api V1 Notices Length Get",
-                  "type": "integer"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/notices/": {
-      "get": {
-        "tags": [
-          "notices"
-        ],
-        "summary": "Read Recent Notices",
-        "description": "Retrieve recent notices.",
-        "operationId": "read_recent_notices_api_v1_notices__get",
-        "parameters": [
-          {
-            "required": false,
-            "schema": {
-              "title": "Num",
-              "type": "integer",
-              "default": 5
-            },
-            "name": "num",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Offset",
-              "type": "integer",
-              "default": 0
-            },
-            "name": "offset",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Response Read Recent Notices Api V1 Notices  Get",
-                  "type": "array",
-                  "items": {}
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/notices/{idx}": {
-      "get": {
-        "tags": [
-          "notices"
-        ],
-        "summary": "Read Notice",
-        "description": "Get notice by id",
-        "operationId": "read_notice_api_v1_notices__idx__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Idx",
-              "type": "integer"
-            },
-            "name": "idx",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notice"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/api/v1/notices/seen": {
-      "put": {
-        "tags": [
-          "notices"
-        ],
-        "summary": "Seen Notice",
-        "description": "Set notice as seen on date",
-        "operationId": "seen_notice_api_v1_notices_seen_put",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NoticeUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notice"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
     }
   },
   "components": {
     "schemas": {
-      "Attribute": {
-        "title": "Attribute",
+      "Body_delete_user_api_v1_auth_me_delete_delete": {
+        "title": "Body_delete_user_api_v1_auth_me_delete_delete",
         "required": [
-          "name",
-          "values"
+          "password"
         ],
         "type": "object",
         "properties": {
-          "name": {
-            "title": "Name",
-            "type": "string"
-          },
-          "values": {
-            "title": "Values",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Value"
-            }
-          }
-        }
-      },
-      "AuthToken": {
-        "title": "AuthToken",
-        "required": [
-          "value",
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "value": {
-            "title": "Value",
-            "type": "string"
-          },
-          "type": {
-            "title": "Type",
+          "password": {
+            "title": "Password",
             "type": "string"
           }
         }
       },
-      "Body_login_access_token_admin_api_v1_login_access_token_admin_post": {
-        "title": "Body_login_access_token_admin_api_v1_login_access_token_admin_post",
+      "Body_login_api_v1_auth_login_post": {
+        "title": "Body_login_api_v1_auth_login_post",
         "required": [
           "username",
           "password"
@@ -1141,44 +1181,8 @@
           }
         }
       },
-      "Body_login_access_token_api_v1_login_access_token_post": {
-        "title": "Body_login_access_token_api_v1_login_access_token_post",
-        "required": [
-          "username",
-          "password"
-        ],
-        "type": "object",
-        "properties": {
-          "grant_type": {
-            "title": "Grant Type",
-            "pattern": "password",
-            "type": "string"
-          },
-          "username": {
-            "title": "Username",
-            "type": "string"
-          },
-          "password": {
-            "title": "Password",
-            "type": "string"
-          },
-          "scope": {
-            "title": "Scope",
-            "type": "string",
-            "default": ""
-          },
-          "client_id": {
-            "title": "Client Id",
-            "type": "string"
-          },
-          "client_secret": {
-            "title": "Client Secret",
-            "type": "string"
-          }
-        }
-      },
-      "Body_reset_password_api_v1_reset_password__post": {
-        "title": "Body_reset_password_api_v1_reset_password__post",
+      "Body_reset_password_api_v1_auth_reset_post": {
+        "title": "Body_reset_password_api_v1_auth_reset_post",
         "required": [
           "token",
           "new_password"
@@ -1195,21 +1199,34 @@
           }
         }
       },
-      "EndpointsElement": {
-        "title": "EndpointsElement",
+      "EncodedToken": {
+        "title": "EncodedToken",
         "required": [
-          "count",
-          "name"
+          "value",
+          "type"
         ],
         "type": "object",
         "properties": {
-          "count": {
-            "title": "Count",
-            "type": "integer"
-          },
-          "name": {
-            "title": "Name",
+          "value": {
+            "title": "Value",
             "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        }
+      },
+      "Flag": {
+        "title": "Flag",
+        "required": [
+          "flag"
+        ],
+        "type": "object",
+        "properties": {
+          "flag": {
+            "title": "Flag",
+            "type": "boolean"
           }
         }
       },
@@ -1226,72 +1243,6 @@
           }
         }
       },
-      "Header": {
-        "title": "Header",
-        "required": [
-          "iteration",
-          "search_id",
-          "status"
-        ],
-        "type": "object",
-        "properties": {
-          "iteration": {
-            "title": "Iteration",
-            "type": "integer"
-          },
-          "search_id": {
-            "title": "Search Id",
-            "type": "integer"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string"
-          }
-        }
-      },
-      "HistoryElement": {
-        "title": "HistoryElement",
-        "required": [
-          "profile_id"
-        ],
-        "type": "object",
-        "properties": {
-          "profile_id": {
-            "title": "Profile Id",
-            "type": "integer"
-          },
-          "values": {
-            "title": "Values",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": []
-          }
-        }
-      },
-      "Log": {
-        "title": "Log",
-        "type": "object",
-        "properties": {
-          "endpoints": {
-            "title": "Endpoints",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EndpointsElement"
-            },
-            "default": []
-          },
-          "history": {
-            "title": "History",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/HistoryElement"
-            },
-            "default": []
-          }
-        }
-      },
       "Login": {
         "title": "Login",
         "required": [
@@ -1301,7 +1252,7 @@
         "type": "object",
         "properties": {
           "token": {
-            "$ref": "#/components/schemas/AuthToken"
+            "$ref": "#/components/schemas/EncodedToken"
           },
           "user": {
             "$ref": "#/components/schemas/UserLoggedIn"
@@ -1321,439 +1272,52 @@
           }
         }
       },
-      "Notice": {
-        "title": "Notice",
+      "User": {
+        "title": "User",
         "required": [
-          "user_id",
-          "payload",
           "id",
           "created"
         ],
         "type": "object",
         "properties": {
-          "user_id": {
-            "title": "User Id",
-            "type": "integer"
-          },
-          "payload": {
-            "$ref": "#/components/schemas/NoticePayload"
-          },
-          "seen_on": {
-            "title": "Seen On",
-            "type": "integer"
-          },
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "created": {
-            "title": "Created",
-            "type": "integer"
-          }
-        }
-      },
-      "NoticePayload": {
-        "title": "NoticePayload",
-        "required": [
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NoticePayloadType"
-              }
-            ],
-            "default": "UNKNOWN"
-          }
-        }
-      },
-      "NoticePayloadType": {
-        "title": "NoticePayloadType",
-        "enum": [
-          "UNKNOWN",
-          "REPORT",
-          "<class 'app.schemas.notice.NoticePayloadType.Config'>"
-        ],
-        "type": "string",
-        "description": "An enumeration."
-      },
-      "NoticeUpdate": {
-        "title": "NoticeUpdate",
-        "required": [
-          "user_id",
-          "seen_on",
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "user_id": {
-            "title": "User Id",
-            "type": "integer"
-          },
-          "payload": {
-            "$ref": "#/components/schemas/NoticePayload"
-          },
-          "seen_on": {
-            "title": "Seen On",
-            "type": "integer"
-          },
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          }
-        }
-      },
-      "Origin": {
-        "title": "Origin",
-        "type": "object",
-        "properties": {
-          "domain": {
-            "title": "Domain",
-            "type": "string",
-            "default": "seed"
-          },
-          "iteration": {
-            "title": "Iteration",
-            "type": "integer",
-            "default": 0
-          },
-          "profile_id": {
-            "title": "Profile Id",
-            "type": "string",
-            "default": "__user__"
-          },
-          "timestamp": {
-            "title": "Timestamp",
-            "type": "integer",
-            "default": 0
-          }
-        }
-      },
-      "Profile": {
-        "title": "Profile",
-        "required": [
-          "attributes"
-        ],
-        "type": "object",
-        "properties": {
-          "attributes": {
-            "title": "Attributes",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Attribute"
-            }
-          }
-        }
-      },
-      "Report": {
-        "title": "Report",
-        "required": [
-          "id",
-          "user_id",
-          "created"
-        ],
-        "type": "object",
-        "properties": {
-          "first_name": {
-            "title": "First Name",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "last_name": {
-            "title": "Last Name",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "location": {
-            "title": "Location",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "email": {
             "title": "Email",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string",
+            "format": "email"
           },
-          "image": {
-            "title": "Image",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean",
+            "default": true
+          },
+          "is_superuser": {
+            "title": "Is Superuser",
+            "type": "boolean",
+            "default": false
           },
           "id": {
             "title": "Id",
-            "type": "integer"
-          },
-          "user_id": {
-            "title": "User Id",
             "type": "integer"
           },
           "created": {
             "title": "Created",
             "type": "integer"
           },
-          "modified": {
-            "title": "Modified",
+          "last_login": {
+            "title": "Last Login",
             "type": "integer"
-          },
-          "seen_on": {
-            "title": "Seen On",
-            "type": "integer"
-          },
-          "archived_on": {
-            "title": "Archived On",
-            "type": "integer"
-          },
-          "tags": {
-            "title": "Tags",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": []
-          },
-          "status": {
-            "title": "Status",
-            "type": "string"
-          },
-          "body": {
-            "title": "Body",
-            "type": "string"
-          }
-        }
-      },
-      "ReportSummary": {
-        "title": "ReportSummary",
-        "required": [
-          "id",
-          "user_id",
-          "created"
-        ],
-        "type": "object",
-        "properties": {
-          "first_name": {
-            "title": "First Name",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "last_name": {
-            "title": "Last Name",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "location": {
-            "title": "Location",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "email": {
-            "title": "Email",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "image": {
-            "title": "Image",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "user_id": {
-            "title": "User Id",
-            "type": "integer"
-          },
-          "created": {
-            "title": "Created",
-            "type": "integer"
-          },
-          "modified": {
-            "title": "Modified",
-            "type": "integer"
-          },
-          "seen_on": {
-            "title": "Seen On",
-            "type": "integer"
-          },
-          "archived_on": {
-            "title": "Archived On",
-            "type": "integer"
-          },
-          "tags": {
-            "title": "Tags",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": []
-          },
-          "status": {
-            "title": "Status",
-            "type": "string"
-          }
-        }
-      },
-      "Request": {
-        "title": "Request",
-        "required": [
-          "profile",
-          "settings"
-        ],
-        "type": "object",
-        "properties": {
-          "profile": {
-            "$ref": "#/components/schemas/Seed"
           },
           "settings": {
-            "$ref": "#/components/schemas/Settings"
-          }
-        }
-      },
-      "Result": {
-        "title": "Result",
-        "required": [
-          "header",
-          "log",
-          "profile",
-          "settings"
-        ],
-        "type": "object",
-        "properties": {
-          "header": {
-            "$ref": "#/components/schemas/Header"
+            "$ref": "#/components/schemas/UserSettings"
           },
-          "log": {
-            "$ref": "#/components/schemas/Log"
-          },
-          "others": {
-            "title": "Others",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Profile"
-            },
-            "default": []
-          },
-          "profile": {
-            "$ref": "#/components/schemas/Profile"
-          },
-          "settings": {
-            "$ref": "#/components/schemas/Settings"
-          }
-        }
-      },
-      "Seed": {
-        "title": "Seed",
-        "required": [
-          "first_name",
-          "last_name"
-        ],
-        "type": "object",
-        "properties": {
-          "first_name": {
-            "title": "First Name",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "last_name": {
-            "title": "Last Name",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "location": {
-            "title": "Location",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "email": {
-            "title": "Email",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "avatar_url": {
-            "title": "Avatar Url",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "image": {
-            "title": "Image",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "Settings": {
-        "title": "Settings",
-        "type": "object",
-        "properties": {
-          "attribute_black_list": {
-            "title": "Attribute Black List",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": []
-          },
-          "domain_black_list": {
-            "title": "Domain Black List",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": []
-          },
-          "source_black_list": {
-            "title": "Source Black List",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": []
-          },
-          "endpoint_black_list": {
-            "title": "Endpoint Black List",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": []
+          "deleted": {
+            "title": "Deleted",
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -1778,6 +1342,450 @@
           "is_superuser": {
             "title": "Is Superuser",
             "type": "boolean"
+          }
+        }
+      },
+      "UserQuota": {
+        "title": "UserQuota",
+        "type": "object",
+        "properties": {
+          "day": {
+            "title": "Day",
+            "type": "integer",
+            "default": 0
+          },
+          "month": {
+            "title": "Month",
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "UserRegister": {
+        "title": "UserRegister",
+        "required": [
+          "email",
+          "password",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean",
+            "default": true
+          },
+          "is_superuser": {
+            "title": "Is Superuser",
+            "type": "boolean",
+            "default": false
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "token": {
+            "title": "Token",
+            "type": "string"
+          }
+        }
+      },
+      "UserSettings": {
+        "title": "UserSettings",
+        "type": "object",
+        "properties": {
+          "quota_day": {
+            "title": "Quota Day",
+            "type": "integer",
+            "default": 0
+          },
+          "quota_month": {
+            "title": "Quota Month",
+            "type": "integer",
+            "default": 0
+          },
+          "sources": {
+            "title": "Sources",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "subscribed": {
+            "title": "Subscribed",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
+        }
+      },
+      "UserSources": {
+        "title": "UserSources",
+        "type": "object",
+        "properties": {
+          "sources": {
+            "title": "Sources",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
+        }
+      },
+      "UserUpdate": {
+        "title": "UserUpdate",
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean",
+            "default": true
+          },
+          "is_superuser": {
+            "title": "Is Superuser",
+            "type": "boolean",
+            "default": false
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          }
+        }
+      },
+      "Analytics": {
+        "title": "Analytics",
+        "required": [
+          "user_id",
+          "start",
+          "end"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "start": {
+            "title": "Start",
+            "type": "integer"
+          },
+          "end": {
+            "title": "End",
+            "type": "integer"
+          },
+          "numberOfSearches": {
+            "title": "Numberofsearches",
+            "type": "integer",
+            "default": 0
+          },
+          "totalDuration": {
+            "title": "Totalduration",
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "Report": {
+        "title": "Report",
+        "required": [
+          "id",
+          "user_id",
+          "seed_id",
+          "created"
+        ],
+        "type": "object",
+        "properties": {
+          "search_id": {
+            "title": "Search Id",
+            "type": "integer"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReportStatus"
+              }
+            ],
+            "default": "NEW"
+          },
+          "tags": {
+            "title": "Tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "seed_id": {
+            "title": "Seed Id",
+            "type": "integer"
+          },
+          "credit_id": {
+            "title": "Credit Id",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          },
+          "modified": {
+            "title": "Modified",
+            "type": "integer"
+          },
+          "seen_on": {
+            "title": "Seen On",
+            "type": "integer"
+          },
+          "archived_on": {
+            "title": "Archived On",
+            "type": "integer"
+          },
+          "whitelist": {
+            "title": "Whitelist",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "blacklist": {
+            "title": "Blacklist",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ReportData": {
+        "title": "ReportData",
+        "required": [
+          "id",
+          "created"
+        ],
+        "type": "object",
+        "properties": {
+          "raw_json": {
+            "title": "Raw Json",
+            "type": "object"
+          },
+          "items": {
+            "title": "Items",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "images": {
+            "title": "Images",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "search_result": {
+            "title": "Search Result",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "source_count": {
+            "title": "Source Count",
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "searched_sources": {
+            "title": "Searched Sources",
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          },
+          "modified": {
+            "title": "Modified",
+            "type": "integer"
+          }
+        }
+      },
+      "ReportStatus": {
+        "title": "ReportStatus",
+        "enum": [
+          "NEW",
+          "CREATED",
+          "ONGOING",
+          "FINISHED",
+          "CANCELLED",
+          "ERROR",
+          "ABORT_ON_SELECT",
+          "ABORT_ON_ITERATION",
+          "<class 'app.schemas.report.ReportStatus.Config'>"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "Header": {
+        "title": "Header",
+        "required": [
+          "iteration",
+          "search_id",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "iteration": {
+            "title": "Iteration",
+            "type": "integer"
+          },
+          "search_id": {
+            "title": "Search Id",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      },
+      "Request": {
+        "title": "Request",
+        "required": [
+          "seed",
+          "settings"
+        ],
+        "type": "object",
+        "properties": {
+          "seed": {
+            "$ref": "#/components/schemas/SeedBase"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/Settings"
+          }
+        }
+      },
+      "SeedBase": {
+        "title": "SeedBase",
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "title": "First Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "middle_name": {
+            "title": "Middle Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "birthday": {
+            "title": "Birthday",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "email": {
+            "title": "Email",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "title": "Image",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Settings": {
+        "title": "Settings",
+        "type": "object",
+        "properties": {
+          "endpoints": {
+            "title": "Endpoints",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -1806,39 +1814,6 @@
             "type": "string"
           }
         }
-      },
-      "Value": {
-        "title": "Value",
-        "required": [
-          "origin",
-          "value"
-        ],
-        "type": "object",
-        "properties": {
-          "confidence": {
-            "title": "Confidence",
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "number"
-              }
-            ],
-            "default": 0
-          },
-          "origin": {
-            "title": "Origin",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Origin"
-            }
-          },
-          "value": {
-            "title": "Value",
-            "type": "string"
-          }
-        }
       }
     },
     "securitySchemes": {
@@ -1847,7 +1822,7 @@
         "flows": {
           "password": {
             "scopes": {},
-            "tokenUrl": "/api/v1/login/access-token"
+            "tokenUrl": "https://app.digitalus.io/api/v1/auth/login"
           }
         }
       }

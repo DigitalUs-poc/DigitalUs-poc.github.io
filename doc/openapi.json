@@ -1,57 +1,13 @@
-﻿{
-  "openapi": "3.0.2",
+{
+  "openapi": "3.0.3",
   "info": {
-    "title": "digitalUs",
-    "version": "0.1.0"
+    "title": "digitalUs themis",
+    "version": "0.1",
+    "x-logo": {
+      "url": "https://app.digitalus.io/img/icons/favicon-64x64.png"
+    }
   },
   "paths": {
-    "/api/v1/seed/": {
-      "post": {
-        "tags": [
-          "seed"
-        ],
-        "summary": "Create",
-        "description": "Create new report and forward to hermes.",
-        "operationId": "create_api_v1_seed__post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Request"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Header"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
     "/api/v1/auth/login": {
       "post": {
         "tags": [
@@ -350,6 +306,33 @@
         ]
       }
     },
+    "/api/v1/auth/me/usage": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Get My Usage",
+        "description": "Update own user.",
+        "operationId": "get_my_usage_api_v1_auth_me_usage_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserQuota"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/auth/me/quota": {
       "get": {
         "tags": [
@@ -488,11 +471,60 @@
         "summary": "Delete User",
         "description": "Delete my account",
         "operationId": "delete_user_api_v1_auth_me_delete_delete",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Flag"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/utils/health/": {
+      "get": {
+        "tags": [
+          "utils"
+        ],
+        "summary": "Health",
+        "description": "Health Check endpoint.",
+        "operationId": "health_api_v1_auth_utils_health__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Msg"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/": {
+      "post": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Make Search",
+        "description": "Create new report and forward to hermes.",
+        "operationId": "make_search_api_v1_search__post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Body_delete_user_api_v1_auth_me_delete_delete"
+                "$ref": "#/components/schemas/Request"
               }
             }
           },
@@ -527,14 +559,459 @@
         ]
       }
     },
+    "/api/v1/schedule/{seed_id}": {
+      "get": {
+        "tags": [
+          "schedule"
+        ],
+        "summary": "Get Schedule For Seed",
+        "description": "Return the stored Schedule for a seed ID",
+        "operationId": "get_schedule_for_seed_api_v1_schedule__seed_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Seed Id",
+              "type": "integer"
+            },
+            "name": "seed_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Schedule"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "schedule"
+        ],
+        "summary": "Set Schedule For Seed",
+        "description": "Set a stored Schedule for a seed ID",
+        "operationId": "set_schedule_for_seed_api_v1_schedule__seed_id__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Seed Id",
+              "type": "integer"
+            },
+            "name": "seed_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Schedule"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Flag"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/search/utils/health/": {
+      "get": {
+        "tags": [
+          "utils"
+        ],
+        "summary": "Health",
+        "description": "Health Check endpoint.",
+        "operationId": "health_api_v1_search_utils_health__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Msg"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seed/summary": {
+      "post": {
+        "tags": [
+          "seed"
+        ],
+        "summary": "Get Seeds Summary",
+        "description": "Get the list of seeds along with latest report summary data",
+        "operationId": "get_seeds_summary_api_v1_seed_summary_post",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 30
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FrontEndConfig"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/seed/{idx}": {
+      "get": {
+        "tags": [
+          "seed"
+        ],
+        "summary": "Get Seed",
+        "description": "Get a seed",
+        "operationId": "get_seed_api_v1_seed__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Seed"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "seed"
+        ],
+        "summary": "Delete Seed",
+        "description": "Delete a seed. Propagates to reports",
+        "operationId": "delete_seed_api_v1_seed__idx__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Flag"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/seed/": {
+      "get": {
+        "tags": [
+          "seed"
+        ],
+        "summary": "Get Seeds",
+        "description": "Get the list of seeds",
+        "operationId": "get_seeds_api_v1_seed__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 30
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Seeds Api V1 Seed  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Seed"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/seed/archive/{idx}": {
+      "get": {
+        "tags": [
+          "seed"
+        ],
+        "summary": "Archive Seed",
+        "description": "Archive a seed.",
+        "operationId": "archive_seed_api_v1_seed_archive__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Msg"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "seed"
+        ],
+        "summary": "Un Archive Report",
+        "description": "Restore a seed from the archive.",
+        "operationId": "un_archive_report_api_v1_seed_archive__idx__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Msg"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/report/usage/day": {
       "get": {
         "tags": [
           "report"
         ],
-        "summary": "Read Usage Day",
+        "summary": "Get Usage Day",
         "description": "Retrieve analytics for this day.",
-        "operationId": "read_usage_day_api_v1_report_usage_day_get",
+        "operationId": "get_usage_day_api_v1_report_usage_day_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -559,9 +1036,9 @@
         "tags": [
           "report"
         ],
-        "summary": "Read Usage Month",
+        "summary": "Get Usage Month",
         "description": "Retrieve analytics for this month.",
-        "operationId": "read_usage_month_api_v1_report_usage_month_get",
+        "operationId": "get_usage_month_api_v1_report_usage_month_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -586,9 +1063,9 @@
         "tags": [
           "report"
         ],
-        "summary": "Read Reports",
+        "summary": "Get Reports",
         "description": "Retrieve reports.",
-        "operationId": "read_reports_api_v1_report__get",
+        "operationId": "get_reports_api_v1_report__get",
         "parameters": [
           {
             "required": false,
@@ -617,7 +1094,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Read Reports Api V1 Report  Get",
+                  "title": "Response Get Reports Api V1 Report  Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Report"
@@ -649,9 +1126,9 @@
         "tags": [
           "report"
         ],
-        "summary": "Read Archived",
+        "summary": "Get Archived",
         "description": "Retrieve reports.",
-        "operationId": "read_archived_api_v1_report_archived_get",
+        "operationId": "get_archived_api_v1_report_archived_get",
         "parameters": [
           {
             "required": false,
@@ -680,7 +1157,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Read Archived Api V1 Report Archived Get",
+                  "title": "Response Get Archived Api V1 Report Archived Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Report"
@@ -712,9 +1189,9 @@
         "tags": [
           "report"
         ],
-        "summary": "Read Report",
+        "summary": "Get Report Summary",
         "description": "Get report summary by ID.",
-        "operationId": "read_report_api_v1_report_summary__idx__get",
+        "operationId": "get_report_summary_api_v1_report_summary__idx__get",
         "parameters": [
           {
             "required": true,
@@ -755,14 +1232,86 @@
         ]
       }
     },
-    "/api/v1/report/{idx}": {
+    "/api/v1/report/seed/{seed_id}": {
       "get": {
         "tags": [
           "report"
         ],
-        "summary": "Read Report Data",
-        "description": "Get report by ID.",
-        "operationId": "read_report_data_api_v1_report__idx__get",
+        "summary": "Get Reports For Seed",
+        "description": "Get report summary history for seed ID.",
+        "operationId": "get_reports_for_seed_api_v1_report_seed__seed_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Seed Id",
+              "type": "integer"
+            },
+            "name": "seed_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Skip",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "type": "integer",
+              "default": 30
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Reports For Seed Api V1 Report Seed  Seed Id  Get",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Report"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/report/data/{idx}": {
+      "get": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Get Report Data",
+        "description": "Get full report data by ID.",
+        "operationId": "get_report_data_api_v1_report_data__idx__get",
         "parameters": [
           {
             "required": true,
@@ -801,14 +1350,16 @@
             "OAuth2PasswordBearer": []
           }
         ]
-      },
-      "delete": {
+      }
+    },
+    "/api/v1/report/full/{idx}": {
+      "get": {
         "tags": [
           "report"
         ],
-        "summary": "Delete Report",
-        "description": "Delete a report.",
-        "operationId": "delete_report_api_v1_report__idx__delete",
+        "summary": "Get Full Report",
+        "description": "Get full report data by ID.",
+        "operationId": "get_full_report_api_v1_report_full__idx__get",
         "parameters": [
           {
             "required": true,
@@ -826,8 +1377,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Delete Report Api V1 Report  Idx  Delete",
-                  "type": "boolean"
+                  "$ref": "#/components/schemas/FullReport"
                 }
               }
             }
@@ -995,6 +1545,55 @@
         ]
       }
     },
+    "/api/v1/report/{idx}": {
+      "delete": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Delete Report",
+        "description": "Delete a report.",
+        "operationId": "delete_report_api_v1_report__idx__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Delete Report Api V1 Report  Idx  Delete",
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/report/raw/{idx}": {
       "get": {
         "tags": [
@@ -1128,12 +1727,218 @@
           }
         ]
       }
+    },
+    "/api/v1/report/utils/health/": {
+      "get": {
+        "tags": [
+          "utils"
+        ],
+        "summary": "Health",
+        "description": "Health Check endpoint.",
+        "operationId": "health_api_v1_report_utils_health__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Msg"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/notifications/length": {
+      "get": {
+        "tags": [
+          "notifications"
+        ],
+        "summary": "Get Notice Count",
+        "description": "Retrieve total notices count.",
+        "operationId": "get_notice_count_api_v1_notifications_length_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Notice Count Api V1 Notifications Length Get",
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/notifications/": {
+      "get": {
+        "tags": [
+          "notifications"
+        ],
+        "summary": "Read Recent Notices",
+        "description": "Retrieve recent notices.",
+        "operationId": "read_recent_notices_api_v1_notifications__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Num",
+              "type": "integer",
+              "default": 5
+            },
+            "name": "num",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Read Recent Notices Api V1 Notifications  Get",
+                  "type": "array",
+                  "items": {}
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/notifications/{idx}": {
+      "get": {
+        "tags": [
+          "notifications"
+        ],
+        "summary": "Read Notice",
+        "description": "Get notice by id",
+        "operationId": "read_notice_api_v1_notifications__idx__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Idx",
+              "type": "integer"
+            },
+            "name": "idx",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notice"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/notifications/seen": {
+      "put": {
+        "tags": [
+          "notifications"
+        ],
+        "summary": "Seen Notice",
+        "description": "Set notice as seen on date",
+        "operationId": "seen_notice_api_v1_notifications_seen_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoticeUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notice"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
-      "Body_delete_user_api_v1_auth_me_delete_delete": {
-        "title": "Body_delete_user_api_v1_auth_me_delete_delete",
+      "Body_delete_user_api_v1_auth_adm__user_id__delete_post": {
+        "title": "Body_delete_user_api_v1_auth_adm__user_id__delete_post",
         "required": [
           "password"
         ],
@@ -1141,6 +1946,68 @@
         "properties": {
           "password": {
             "title": "Password",
+            "type": "string"
+          }
+        }
+      },
+      "Body_invite_bulk_api_v1_auth_adm_invite_bulk_post": {
+        "title": "Body_invite_bulk_api_v1_auth_adm_invite_bulk_post",
+        "required": [
+          "password",
+          "amount",
+          "ttl"
+        ],
+        "type": "object",
+        "properties": {
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "amount": {
+            "title": "Amount",
+            "type": "integer"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          }
+        }
+      },
+      "Body_invite_to_register_w_settings_api_v1_auth_adm_invite_s_post": {
+        "title": "Body_invite_to_register_w_settings_api_v1_auth_adm_invite_s_post",
+        "required": [
+          "password",
+          "invites"
+        ],
+        "type": "object",
+        "properties": {
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "invites": {
+            "title": "Invites",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Invitation"
+            }
+          }
+        }
+      },
+      "Body_invite_user_api_v1_auth_adm_invite_post": {
+        "title": "Body_invite_user_api_v1_auth_adm_invite_post",
+        "required": [
+          "password",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
             "type": "string"
           }
         }
@@ -1199,6 +2066,67 @@
           }
         }
       },
+      "CreditConsume": {
+        "title": "CreditConsume",
+        "required": [
+          "id",
+          "report_id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "report_id": {
+            "title": "Report Id",
+            "type": "integer"
+          }
+        }
+      },
+      "CreditRequest": {
+        "title": "CreditRequest",
+        "required": [
+          "seed_id"
+        ],
+        "type": "object",
+        "properties": {
+          "seed_id": {
+            "title": "Seed Id",
+            "type": "integer"
+          },
+          "endpoints": {
+            "title": "Endpoints",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreditReservation": {
+        "title": "CreditReservation",
+        "required": [
+          "value",
+          "id",
+          "detail"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "Value",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          }
+        }
+      },
       "EncodedToken": {
         "title": "EncodedToken",
         "required": [
@@ -1243,6 +2171,38 @@
           }
         }
       },
+      "Invitation": {
+        "title": "Invitation",
+        "required": [
+          "email",
+          "daily",
+          "monthly"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "daily": {
+            "title": "Daily",
+            "type": "integer"
+          },
+          "monthly": {
+            "title": "Monthly",
+            "type": "integer"
+          },
+          "package_name": {
+            "title": "Package Name",
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          }
+        }
+      },
       "Login": {
         "title": "Login",
         "required": [
@@ -1269,6 +2229,66 @@
           "msg": {
             "title": "Msg",
             "type": "string"
+          }
+        }
+      },
+      "Token": {
+        "title": "Token",
+        "required": [
+          "value",
+          "created",
+          "expires"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "daily": {
+            "title": "Daily",
+            "type": "integer",
+            "default": 10
+          },
+          "monthly": {
+            "title": "Monthly",
+            "type": "integer",
+            "default": 310
+          },
+          "package_name": {
+            "title": "Package Name",
+            "type": "string"
+          },
+          "ttl": {
+            "title": "Ttl",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          },
+          "expires": {
+            "title": "Expires",
+            "type": "integer"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "TokenList": {
+        "title": "TokenList",
+        "type": "object",
+        "properties": {
+          "tokens": {
+            "title": "Tokens",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
           }
         }
       },
@@ -1318,6 +2338,39 @@
             "title": "Deleted",
             "type": "boolean",
             "default": false
+          }
+        }
+      },
+      "UserCreate": {
+        "title": "UserCreate",
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean",
+            "default": true
+          },
+          "is_superuser": {
+            "title": "Is Superuser",
+            "type": "boolean",
+            "default": false
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
           }
         }
       },
@@ -1474,236 +2527,70 @@
           }
         }
       },
-      "Analytics": {
-        "title": "Analytics",
+      "ValidationError": {
+        "title": "ValidationError",
         "required": [
-          "user_id",
-          "start",
-          "end"
+          "loc",
+          "msg",
+          "type"
         ],
         "type": "object",
         "properties": {
-          "user_id": {
-            "title": "User Id",
-            "type": "integer"
-          },
-          "start": {
-            "title": "Start",
-            "type": "integer"
-          },
-          "end": {
-            "title": "End",
-            "type": "integer"
-          },
-          "numberOfSearches": {
-            "title": "Numberofsearches",
-            "type": "integer",
-            "default": 0
-          },
-          "totalDuration": {
-            "title": "Totalduration",
-            "type": "integer",
-            "default": 0
-          }
-        }
-      },
-      "Report": {
-        "title": "Report",
-        "required": [
-          "id",
-          "user_id",
-          "seed_id",
-          "created"
-        ],
-        "type": "object",
-        "properties": {
-          "search_id": {
-            "title": "Search Id",
-            "type": "integer"
-          },
-          "status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReportStatus"
-              }
-            ],
-            "default": "NEW"
-          },
-          "tags": {
-            "title": "Tags",
+          "loc": {
+            "title": "Location",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "id": {
-            "title": "Id",
-            "type": "integer"
+          "msg": {
+            "title": "Message",
+            "type": "string"
           },
-          "user_id": {
-            "title": "User Id",
-            "type": "integer"
-          },
-          "seed_id": {
-            "title": "Seed Id",
-            "type": "integer"
-          },
-          "credit_id": {
-            "title": "Credit Id",
-            "type": "integer"
-          },
-          "created": {
-            "title": "Created",
-            "type": "integer"
-          },
-          "modified": {
-            "title": "Modified",
-            "type": "integer"
-          },
-          "seen_on": {
-            "title": "Seen On",
-            "type": "integer"
-          },
-          "archived_on": {
-            "title": "Archived On",
-            "type": "integer"
-          },
-          "whitelist": {
-            "title": "Whitelist",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "blacklist": {
-            "title": "Blacklist",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "ReportData": {
-        "title": "ReportData",
-        "required": [
-          "id",
-          "created"
-        ],
-        "type": "object",
-        "properties": {
-          "raw_json": {
-            "title": "Raw Json",
-            "type": "object"
-          },
-          "items": {
-            "title": "Items",
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "object"
-              }
-            }
-          },
-          "images": {
-            "title": "Images",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "search_result": {
-            "title": "Search Result",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "source_count": {
-            "title": "Source Count",
-            "type": "object",
-            "additionalProperties": {
-              "type": "integer"
-            }
-          },
-          "searched_sources": {
-            "title": "Searched Sources",
-            "type": "object",
-            "additionalProperties": {
-              "type": "integer"
-            }
-          },
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "created": {
-            "title": "Created",
-            "type": "integer"
-          },
-          "modified": {
-            "title": "Modified",
-            "type": "integer"
-          }
-        }
-      },
-      "ReportStatus": {
-        "title": "ReportStatus",
-        "enum": [
-          "NEW",
-          "CREATED",
-          "ONGOING",
-          "FINISHED",
-          "CANCELLED",
-          "ERROR",
-          "ABORT_ON_SELECT",
-          "ABORT_ON_ITERATION",
-          "<class 'app.schemas.report.ReportStatus.Config'>"
-        ],
-        "type": "string",
-        "description": "An enumeration."
-      },
-      "Header": {
-        "title": "Header",
-        "required": [
-          "iteration",
-          "search_id",
-          "status"
-        ],
-        "type": "object",
-        "properties": {
-          "iteration": {
-            "title": "Iteration",
-            "type": "integer"
-          },
-          "search_id": {
-            "title": "Search Id",
-            "type": "integer"
-          },
-          "status": {
-            "title": "Status",
+          "type": {
+            "title": "Error Type",
             "type": "string"
           }
         }
+      },
+      "Count": {
+        "title": "Count",
+        "required": [
+          "count"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          }
+        }
+      },
+      "RepeatEnd": {
+        "title": "RepeatEnd",
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/RepeatEndType"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        }
+      },
+      "RepeatEndType": {
+        "title": "RepeatEndType",
+        "enum": [
+          "forever",
+          "until",
+          "after"
+        ],
+        "type": "string",
+        "description": "An enumeration."
       },
       "Request": {
         "title": "Request",
@@ -1718,8 +2605,53 @@
           },
           "settings": {
             "$ref": "#/components/schemas/Settings"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/Schedule"
           }
         }
+      },
+      "Schedule": {
+        "title": "Schedule",
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ScheduleType"
+          },
+          "every": {
+            "title": "Every",
+            "type": "integer"
+          },
+          "on": {
+            "title": "On",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Weekdays"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "end": {
+            "$ref": "#/components/schemas/RepeatEnd"
+          }
+        }
+      },
+      "ScheduleType": {
+        "title": "ScheduleType",
+        "enum": [
+          "none",
+          "daily",
+          "weekly",
+          "monthly",
+          "yearly"
+        ],
+        "type": "string",
+        "description": "An enumeration."
       },
       "SeedBase": {
         "title": "SeedBase",
@@ -1789,28 +2721,892 @@
           }
         }
       },
-      "ValidationError": {
-        "title": "ValidationError",
+      "Weekdays": {
+        "title": "Weekdays",
+        "enum": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "Analytics": {
+        "title": "Analytics",
         "required": [
-          "loc",
-          "msg",
-          "type"
+          "user_id",
+          "start",
+          "end"
         ],
         "type": "object",
         "properties": {
-          "loc": {
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "start": {
+            "title": "Start",
+            "type": "integer"
+          },
+          "end": {
+            "title": "End",
+            "type": "integer"
+          },
+          "numberOfSearches": {
+            "title": "Numberofsearches",
+            "type": "integer",
+            "default": 0
+          },
+          "totalDuration": {
+            "title": "Totalduration",
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "Attribute": {
+        "title": "Attribute",
+        "required": [
+          "name",
+          "values"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "values": {
+            "title": "Values",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Value"
+            }
+          }
+        }
+      },
+      "EndpointsElement": {
+        "title": "EndpointsElement",
+        "required": [
+          "count",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "FrontEndConfig": {
+        "title": "FrontEndConfig",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReportStatusFrontEnd"
+            },
+            "default": []
+          },
+          "tag": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tags"
+            },
+            "default": []
+          }
+        }
+      },
+      "FullReport": {
+        "title": "FullReport",
+        "required": [
+          "seed",
+          "header",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "seed": {
+            "$ref": "#/components/schemas/Seed"
+          },
+          "header": {
+            "$ref": "#/components/schemas/Report"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReportData"
+          }
+        }
+      },
+      "Header": {
+        "title": "Header",
+        "required": [
+          "iteration",
+          "search_id",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "iteration": {
+            "title": "Iteration",
+            "type": "integer"
+          },
+          "search_id": {
+            "title": "Search Id",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      },
+      "HistoryElement": {
+        "title": "HistoryElement",
+        "required": [
+          "profile_id"
+        ],
+        "type": "object",
+        "properties": {
+          "profile_id": {
+            "title": "Profile Id",
+            "type": "integer"
+          },
+          "values": {
+            "title": "Values",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
+        }
+      },
+      "ID": {
+        "title": "ID",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          }
+        }
+      },
+      "Log": {
+        "title": "Log",
+        "type": "object",
+        "properties": {
+          "endpoints": {
+            "title": "Endpoints",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointsElement"
+            },
+            "default": []
+          },
+          "history": {
+            "title": "History",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoryElement"
+            },
+            "default": []
+          }
+        }
+      },
+      "Notice": {
+        "title": "Notice",
+        "required": [
+          "user_id",
+          "payload",
+          "id",
+          "created"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/NoticePayload"
+          },
+          "seen_on": {
+            "title": "Seen On",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          }
+        }
+      },
+      "NoticePayload": {
+        "title": "NoticePayload",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NoticePayloadType"
+              }
+            ],
+            "default": "UNKNOWN"
+          }
+        }
+      },
+      "NoticePayloadType": {
+        "title": "NoticePayloadType",
+        "enum": [
+          "UNKNOWN",
+          "REPORT",
+          "<class 'app.schemas.notice.NoticePayloadType.Config'>"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "NoticeUpdate": {
+        "title": "NoticeUpdate",
+        "required": [
+          "user_id",
+          "seen_on",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/NoticePayload"
+          },
+          "seen_on": {
+            "title": "Seen On",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          }
+        }
+      },
+      "Origin": {
+        "title": "Origin",
+        "type": "object",
+        "properties": {
+          "domain": {
+            "title": "Domain",
+            "type": "string",
+            "default": "seed"
+          },
+          "iteration": {
+            "title": "Iteration",
+            "type": "integer",
+            "default": 0
+          },
+          "profile_id": {
+            "title": "Profile Id",
+            "type": "string",
+            "default": "__user__"
+          },
+          "timestamp": {
+            "title": "Timestamp",
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "Profile": {
+        "title": "Profile",
+        "required": [
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "title": "Attributes",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            }
+          }
+        }
+      },
+      "Recurrence": {
+        "title": "Recurrence",
+        "required": [
+          "id",
+          "recurrent"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "recurrent": {
+            "title": "Recurrent",
+            "type": "boolean"
+          }
+        }
+      },
+      "Report": {
+        "title": "Report",
+        "required": [
+          "id",
+          "user_id",
+          "seed_id",
+          "created"
+        ],
+        "type": "object",
+        "properties": {
+          "search_id": {
+            "title": "Search Id",
+            "type": "integer"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReportStatusBackEnd"
+              }
+            ],
+            "default": "NEW"
+          },
+          "tags": {
+            "title": "Tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "seed_id": {
+            "title": "Seed Id",
+            "type": "integer"
+          },
+          "credit_id": {
+            "title": "Credit Id",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          },
+          "modified": {
+            "title": "Modified",
+            "type": "integer"
+          },
+          "seen_on": {
+            "title": "Seen On",
+            "type": "integer"
+          },
+          "archived_on": {
+            "title": "Archived On",
+            "type": "integer"
+          },
+          "whitelist": {
+            "title": "Whitelist",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "blacklist": {
+            "title": "Blacklist",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status_fe": {
+            "$ref": "#/components/schemas/ReportStatusFrontEnd"
+          }
+        }
+      },
+      "ReportData": {
+        "title": "ReportData",
+        "required": [
+          "id",
+          "created"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "images": {
+            "title": "Images",
+            "type": "array",
+            "items": {}
+          },
+          "search_result": {
+            "title": "Search Result",
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "source_count": {
+            "title": "Source Count",
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "searched_sources": {
+            "title": "Searched Sources",
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          },
+          "modified": {
+            "title": "Modified",
+            "type": "integer"
+          }
+        }
+      },
+      "ReportProvision": {
+        "title": "ReportProvision",
+        "required": [
+          "user_id",
+          "seed_id",
+          "credit_id",
+          "whitelist"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "seed_id": {
+            "title": "Seed Id",
+            "type": "integer"
+          },
+          "credit_id": {
+            "title": "Credit Id",
+            "type": "integer"
+          },
+          "whitelist": {
+            "title": "Whitelist",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ReportStatusBackEnd": {
+        "title": "ReportStatusBackEnd",
+        "enum": [
+          "NEW",
+          "CREATED",
+          "ONGOING",
+          "FINISHED",
+          "CANCELLED",
+          "ERROR",
+          "ABORT_ON_SELECT",
+          "ABORT_ON_ITERATION"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "ReportStatusFrontEnd": {
+        "title": "ReportStatusFrontEnd",
+        "enum": [
+          "PENDING",
+          "COMPLETED",
+          "CANCELLED",
+          "ERROR"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "Result": {
+        "title": "Result",
+        "required": [
+          "header",
+          "log",
+          "profile",
+          "settings"
+        ],
+        "type": "object",
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/Header"
+          },
+          "log": {
+            "$ref": "#/components/schemas/Log"
+          },
+          "others": {
+            "title": "Others",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Profile"
+            },
+            "default": []
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/Settings1"
+          }
+        }
+      },
+      "Seed": {
+        "title": "Seed",
+        "required": [
+          "id",
+          "user_id",
+          "created"
+        ],
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "title": "First Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "middle_name": {
+            "title": "Middle Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
             "title": "Location",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "msg": {
-            "title": "Message",
-            "type": "string"
+          "birthday": {
+            "title": "Birthday",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
-          "type": {
-            "title": "Error Type",
+          "email": {
+            "title": "Email",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "title": "Image",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recurrent": {
+            "title": "Recurrent",
+            "type": "boolean",
+            "default": false
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "created": {
+            "title": "Created",
+            "type": "integer"
+          },
+          "modified": {
+            "title": "Modified",
+            "type": "integer"
+          },
+          "archived": {
+            "title": "Archived",
+            "type": "integer"
+          },
+          "endpoints": {
+            "title": "Endpoints",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SeedCreate": {
+        "title": "SeedCreate",
+        "required": [
+          "first_name",
+          "last_name",
+          "recurrent",
+          "user_id"
+        ],
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "title": "First Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "middle_name": {
+            "title": "Middle Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "birthday": {
+            "title": "Birthday",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "email": {
+            "title": "Email",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "title": "Image",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recurrent": {
+            "title": "Recurrent",
+            "type": "boolean"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "avatar_url": {
+            "title": "Avatar Url",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "endpoints": {
+            "title": "Endpoints",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SeedPage": {
+        "title": "SeedPage",
+        "required": [
+          "skip",
+          "limit",
+          "count",
+          "total",
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "skip": {
+            "title": "Skip",
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SeedSummary"
+            }
+          }
+        }
+      },
+      "SeedSummary": {
+        "title": "SeedSummary",
+        "required": [
+          "seed",
+          "header"
+        ],
+        "type": "object",
+        "properties": {
+          "seed": {
+            "$ref": "#/components/schemas/Seed"
+          },
+          "header": {
+            "$ref": "#/components/schemas/Report"
+          }
+        }
+      },
+      "Settings1": {
+        "title": "Settings",
+        "type": "object",
+        "properties": {
+          "attribute_black_list": {
+            "title": "Attribute Black List",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "domain_black_list": {
+            "title": "Domain Black List",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "source_black_list": {
+            "title": "Source Black List",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "endpoint_black_list": {
+            "title": "Endpoint Black List",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          }
+        }
+      },
+      "Tags": {
+        "title": "Tags",
+        "enum": [
+          "pep",
+          "sanction",
+          "crime",
+          "news",
+          "<class 'app.schemas.hestia.queries.Tags.Config'>"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "Value": {
+        "title": "Value",
+        "required": [
+          "origin",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "confidence": {
+            "title": "Confidence",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "default": 0
+          },
+          "origin": {
+            "title": "Origin",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Origin"
+            }
+          },
+          "value": {
+            "title": "Value",
             "type": "string"
           }
         }
@@ -1822,7 +3618,7 @@
         "flows": {
           "password": {
             "scopes": {},
-            "tokenUrl": "https://app.digitalus.io/api/v1/auth/login"
+            "tokenUrl": "/api/v1/auth/login"
           }
         }
       }
